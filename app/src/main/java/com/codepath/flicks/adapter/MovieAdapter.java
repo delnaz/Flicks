@@ -15,16 +15,11 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
 
 public class MovieAdapter extends ArrayAdapter<Movie> {
-
-
-    static class ViewHolder {
-       TextView title;
-        TextView overview;
-
-    }
 
     public MovieAdapter(Context context, List<Movie> movies){
         super(context, android.R.layout.simple_list_item_1,movies);
@@ -33,21 +28,15 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Movie movie = getItem(position);
-        ImageView ivImage;
         ViewHolder viewHolder; // view lookup cache stored in tag
         if (convertView == null) {
-            viewHolder = new ViewHolder();
+
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.item_movie,parent,false);
-            ivImage = (ImageView) convertView.findViewById(R.id.imageView);
-            ivImage.setImageResource(0);
-
-            viewHolder.title = (TextView)convertView.findViewById(R.id.tvTitle);
-            viewHolder.overview = (TextView)convertView.findViewById(R.id.tvOverview);
+            viewHolder = new ViewHolder(convertView);
+            viewHolder.ivImage.setImageResource(0);
             convertView.setTag(viewHolder);
         } else {
-            ivImage = (ImageView) convertView.findViewById(R.id.imageView);
-
             viewHolder = (ViewHolder) convertView.getTag();
         }
         // Populate the data into the template view using the data object
@@ -67,9 +56,20 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
                 .transform(new RoundedCornersTransformation(10, 10))
                 .placeholder(R.drawable.default_movie_icon)
                 .error(R.drawable.default_movie_icon)
-                .into(ivImage);
+                .into(viewHolder.ivImage);
 
         // Return the completed view to render on screen
         return convertView;
     }
+
+    static class ViewHolder {
+        @BindView(R.id.tvTitle) TextView title;
+        @BindView(R.id.tvOverview) TextView overview;
+        @BindView(R.id.imageView) ImageView ivImage;
+        public ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
+    }
+
+
 }
