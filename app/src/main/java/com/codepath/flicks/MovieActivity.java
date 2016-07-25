@@ -1,12 +1,16 @@
 package com.codepath.flicks;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.codepath.flicks.adapter.MovieAdapter;
 import com.codepath.flicks.models.Movie;
+import com.codepath.flicks.models.MovieDetailActivity;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -27,13 +31,11 @@ public class MovieActivity extends AppCompatActivity {
     @BindView(R.id.lvMovies) ListView lvItems;
     ArrayList<Movie> movies;
     MovieAdapter movieAdapter;
-  //  ListView lvItems;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
         ButterKnife.bind(this);
-      //  lvItems = (ListView) findViewById(R.id.lvMovies);
         movies = new ArrayList<>();
         movieAdapter = new MovieAdapter(this,movies);
         lvItems.setAdapter(movieAdapter);
@@ -49,7 +51,15 @@ public class MovieActivity extends AppCompatActivity {
                 movieAdapter.addAll(movies);
             }
         });
-
+        lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MovieActivity.this,MovieDetailActivity.class);
+                Movie movie = movies.get(position);
+                intent.putExtra("movieID",movie.getMovieID());
+                startActivity(intent);
+            }
+        });
     }
 
     public void fetchDataFromUrl(){

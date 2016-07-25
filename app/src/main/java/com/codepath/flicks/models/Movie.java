@@ -47,11 +47,32 @@ public class Movie {
     String originalTitle;
     String overview;
 
+    public float getVoteAverage() {
+        return voteAverage;
+    }
+
+    public void setVoteAverage(int voteAverage) {
+        this.voteAverage = voteAverage;
+    }
+
+    float voteAverage;
+
+    public int getMovieID() {
+        return movieID;
+    }
+
+    public void setMovieID(int movieID) {
+        this.movieID = movieID;
+    }
+
+    int movieID;
     public Movie (JSONObject jsonObject) throws JSONException{
         this.posterPath = jsonObject.getString("poster_path");
         this.backdropPath = jsonObject.getString("backdrop_path");
         this.originalTitle = jsonObject.getString("original_title");
         this.overview = jsonObject.getString("overview");
+        this.voteAverage = jsonObject.getLong("vote_average");
+        this.movieID = jsonObject.getInt("id");
     }
 
 

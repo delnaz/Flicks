@@ -2,4 +2,6 @@
     <string name="app_name">Flicks</string>
     <string name="title">title</string>
     <string name="overview">overview</string>
+    <string name="detailTitle">detailTitle</string>
+    <string name="detailOverview">detailOverview</string>
 </resources>
